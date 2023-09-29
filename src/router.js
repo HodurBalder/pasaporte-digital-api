@@ -16,4 +16,5 @@ module.exports = [
     require('./sessions/sessions.router'),
     require('./users/users.router'),
     require('./games/games.router'),
+    require('./codes/codes.router'),
 ]

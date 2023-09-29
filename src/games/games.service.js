@@ -17,7 +17,7 @@ module.exports = {
 async function createGame(data) {
     try {
 
-        const exists = await Model.findOne({ userId: data.userId, nameGame: data.gameName })
+        const exists = await Model.findOne({ userId: data.userId, gameName: data.gameName })
 
         if (exists)
             return exists

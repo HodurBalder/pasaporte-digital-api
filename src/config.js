@@ -8,4 +8,5 @@ module.exports = {
     salt: process.env.SALT,
     cron: process.env.CRON === 'true',
     app: process.env.APP,
+    sendgrid: process.env.SENDGRID
 }

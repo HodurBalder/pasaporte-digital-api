@@ -4,7 +4,7 @@ const Xlsx = require('xlsx')
 const Crypto = require('crypto')
 const Cryptr = require('cryptr')
 const Bcrypt = require('bcrypt')
-const Config = require('./config')
+const Config = require('../src/config')
 
 module.exports = {
     tokenExpired,
@@ -48,7 +48,7 @@ function stringCompare(value, hash) {
 function cryptoHash(length = 16) {
 
     const hash = Crypto.createHash('sha256', Config.salt)
-          hash.update(new Date().toISOString())
+        hash.update(new Date().toISOString())
 
     return hash.digest('hex').slice(0, length).toUpperCase()
 }

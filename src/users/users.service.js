@@ -3,6 +3,9 @@ const Messages = require('./users.messages')
 const Services = require('../services')
 const Methods = require('../methods')
 const Utils = require('../utils')
+const Config = require('../config')
+const SGMail = require('@sendgrid/mail')
+
 
 module.exports = {
     loginUser,
@@ -26,6 +29,24 @@ async function loginUser(data) {
 
         if(!Methods.bcryptCompare(data.password, user.password))
             throw new Messages(data).userPasswordError
+
+
+    SGMail.setApiKey(Config.brand)
+    const msg = {
+    to: 'adrian_tec_@gmail.com', // Change to your recipient
+    from: 'hodurbalder@gmail.com', // Change to your verified sender
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    }
+    SGMail
+    .send(msg)
+    .then(() => {
+        console.log('Email sent')
+    })
+    .catch((error) => {
+        console.error(error)
+    })
 
         return await Services.Sessions.createSession({userId: user._id})
 
