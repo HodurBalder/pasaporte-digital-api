@@ -14,7 +14,8 @@ const schema = new Schema({
     },
 
     used: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
 
     updated: {

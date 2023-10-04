@@ -12,4 +12,6 @@ Router.put('/codes/:codeId', Middlewares.auth, Hub.updateCode)
 
 Router.delete('/codes/:codeId', Middlewares.auth, Hub.deleteCode)
 
+Router.get('/generateCodes', Middlewares.auth, Hub.generateCodes)
+
 module.exports = Router

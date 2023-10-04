@@ -8,7 +8,9 @@ module.exports = {
     getUser,
     updateUser,
     updateUserPassword,
-    deleteUser
+    deleteUser,
+    resetPasswordRequest,
+    resetPassword
 }
 
 async function loginUser(request, response) {
@@ -129,6 +131,39 @@ async function deleteUser(request, response) {
         }
 
         response.$data(await Service.deleteUser(data.userId))
+
+    } catch(error) {
+        response.$error(error)
+    }
+}
+
+async function resetPasswordRequest(request, response) {
+    try {
+
+        const fields = new Fields(request)
+
+        const data = {
+            email: fields.email.get()
+        }
+
+        response.$data(await Service.resetPasswordRequest(data.email))
+
+    } catch(error) {
+        response.$error(error)
+    }
+}
+
+async function resetPassword(request, response) {
+    try {
+
+        const fields = new Fields(request)
+
+        const data = {
+            token: fields.token.get(),
+            password: fields.password.get()
+        }
+
+        response.$data(await Service.resetPassword(data))
 
     } catch(error) {
         response.$error(error)

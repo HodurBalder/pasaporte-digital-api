@@ -2,6 +2,7 @@ const Model = require('./codes.model')
 const Messages = require('./codes.messages')
 const Services = require('../services')
 const Utils = require('../utils')
+const Methods = require('../methods')
 
 module.exports = {
     createCode,
@@ -9,6 +10,7 @@ module.exports = {
     getCode,
     updateCode,
     deleteCode,
+    generateCodes,
     Model,
     Messages
 }
@@ -97,4 +99,41 @@ async function deleteCode(codeId) {
     } catch(error) {
         throw error
     }
+}
+
+async function generateCodes() {
+    
+    const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    const gameNames = ['tiktok', 'sesgosCognitivos', 'quizzFinanciero', 'quizzFinal', 'laberintoWeb', 'laberintoVR']
+    const codes = []
+    const codesPerGame = 100
+    let code
+
+    do {
+        code = ''
+        for (let i = 0; i < 4; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length)
+            code += characters[randomIndex]
+        }
+
+        if(!codes.includes(code))
+            codes.push(code)
+
+    } while (codes.length < (codesPerGame * gameNames.length))
+
+    const result = [].concat(...gameNames.map((gameName, index) => {
+        const startIndex = index * codesPerGame
+        const endIndex = startIndex + codesPerGame;
+
+        const gameCodes = codes.slice(startIndex, endIndex).map((code) => ({
+        gameName,
+        code,
+        }))
+    
+        return gameCodes
+    }))
+
+    console.log(result)
+    return Methods.jsonxls(result);
+
 }

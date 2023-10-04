@@ -8,5 +8,13 @@ module.exports = {
     salt: process.env.SALT,
     cron: process.env.CRON === 'true',
     app: process.env.APP,
-    sendgrid: process.env.SENDGRID
+    saltDecryptToken: process.env.SALTDECRYPTTOKEN,
+
+    sendgrid: {
+        key: process.env.SENDGRID,
+        templates: {
+            resetPassword: process.env.TEMPLATERESETPASSWORDSENDGRIDID
+        },
+        saltResetPassword: process.env.SALTRESETPASSWORD
+    }
 }

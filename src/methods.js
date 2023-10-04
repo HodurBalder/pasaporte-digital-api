@@ -30,18 +30,18 @@ function bcryptCompare(value, hash) {
     return Bcrypt.compareSync(value, hash)
 }
 
-function stringCryptr(value) {
-    const cryptr = new Cryptr(Config.salt)
+function stringCryptr(value, salt = Config.salt) {
+    const cryptr = new Cryptr(salt)
     return cryptr.encrypt(value)
 }
 
-function stringDecrypt(value) {
-    const cryptr = new Cryptr(Config.salt)
+function stringDecrypt(value, salt = Config.salt) {
+    const cryptr = new Cryptr(salt)
     return cryptr.decrypt(value)
 }
 
-function stringCompare(value, hash) {
-    value = stringCryptr(value)
+function stringCompare(value, hash, salt = Config.salt) {
+    value = stringCryptr(value, salt)
     return value === hash
 }
 

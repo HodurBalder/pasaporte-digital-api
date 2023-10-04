@@ -6,7 +6,8 @@ module.exports = {
     getCodes,
     getCode,
     updateCode,
-    deleteCode
+    deleteCode,
+    generateCodes
 }
 
 async function createCode(request, response) {
@@ -86,6 +87,16 @@ async function deleteCode(request, response) {
         }
 
         response.$data(await Service.deleteCode(data.codeId))
+
+    } catch(error) {
+        response.$error(error)
+    }
+}
+
+async function generateCodes(request, response) {
+    try {
+
+        response.$file(await Service.generateCodes())
 
     } catch(error) {
         response.$error(error)

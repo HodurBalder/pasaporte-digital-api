@@ -1,11 +1,9 @@
+const Config = require('../config')
 const Model = require('./users.model')
 const Messages = require('./users.messages')
 const Services = require('../services')
 const Methods = require('../methods')
 const Utils = require('../utils')
-const Config = require('../config')
-const SGMail = require('@sendgrid/mail')
-
 
 module.exports = {
     loginUser,
@@ -15,6 +13,8 @@ module.exports = {
     updateUser,
     updateUserPassword,
     deleteUser,
+    resetPasswordRequest,
+    resetPassword,
     Model,
     Messages
 }
@@ -29,24 +29,6 @@ async function loginUser(data) {
 
         if(!Methods.bcryptCompare(data.password, user.password))
             throw new Messages(data).userPasswordError
-
-
-    SGMail.setApiKey(Config.brand)
-    const msg = {
-    to: 'adrian_tec_@gmail.com', // Change to your recipient
-    from: 'hodurbalder@gmail.com', // Change to your verified sender
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    }
-    SGMail
-    .send(msg)
-    .then(() => {
-        console.log('Email sent')
-    })
-    .catch((error) => {
-        console.error(error)
-    })
 
         return await Services.Sessions.createSession({userId: user._id})
 
@@ -65,7 +47,9 @@ async function createUser(data) {
 
         const user = new Model(data)
 
-        return await user.save()
+        await user.save()
+
+        return await Services.Sessions.createSession({userId: user._id})
 
     } catch(error) {
         throw error
@@ -158,6 +142,35 @@ async function deleteUser(userId) {
         await Model.deleteOne({_id: userId})
 
         return userId
+
+    } catch(error) {
+        throw error
+    }
+}
+
+async function resetPasswordRequest(email) {
+    try {
+
+        const user = await Model.findOne({email: email})
+
+        if(!user)
+            throw new Messages(data).userNotFound
+
+            return await Services.SendGrid.sendEmailResetPassword(user)
+
+    } catch(error) {
+        throw error
+    }
+}
+
+async function resetPassword(data) {
+    try {
+
+        const userId = Methods.stringDecrypt(data.token, Config.saltDecryptToken)
+
+        await updateUserPassword(userId, data)
+
+        return await Services.Sessions.createSession({userId: userId})
 
     } catch(error) {
         throw error
