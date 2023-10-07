@@ -1,10 +1,16 @@
 const Schema = require('mongoose').Schema
 const Model = require('mongoose').model
-const ObjectId = require('mongoose').Types.ObjectId
 const Messages = require('./users.messages')
 const Methods = require('../methods')
+const uuid = require('uuid');
 
 const schema = new Schema({
+    
+    uuid: {
+        type: String,
+        default: uuid.v4, 
+        select: false
+    },
 
     role: {
         type: String,

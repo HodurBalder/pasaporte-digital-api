@@ -49,7 +49,11 @@ async function createUser(data) {
 
         await user.save()
 
-        return await Services.Sessions.createSession({userId: user._id})
+        dataSession = await Services.Sessions.createSession({userId: user._id})
+
+        // await Services.Siga.createUser(dataSession.user)
+
+        return dataSession
 
     } catch(error) {
         throw error
@@ -154,7 +158,7 @@ async function resetPasswordRequest(email) {
         const user = await Model.findOne({email: email})
 
         if(!user)
-            throw new Messages(data).userNotFound
+            throw new Messages(user).userNotFound
 
             return await Services.SendGrid.sendEmailResetPassword(user)
 
