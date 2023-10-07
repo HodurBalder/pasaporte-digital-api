@@ -18,6 +18,6 @@ Router.delete('/users/:userId', Middlewares.auth, Hub.deleteUser)
 
 Router.get('/users/resetPasswordRequest/:email', Hub.resetPasswordRequest)
 
-Router.put('/users/resetPasswordRequest/:token', Hub.resetPassword)
+Router.put('/users/resetPasswordRequest/:email', Hub.resetPassword)
 
 module.exports = Router

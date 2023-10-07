@@ -159,7 +159,8 @@ async function resetPassword(request, response) {
         const fields = new Fields(request)
 
         const data = {
-            token: fields.token.get(),
+            email: fields.email.get(),
+            code: fields.code.get(),
             password: fields.password.get()
         }
 

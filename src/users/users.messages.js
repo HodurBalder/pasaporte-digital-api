@@ -36,5 +36,12 @@ module.exports = class Messages {
             message: $message || 'La contraseña es incorrecta',
             $details
         }
+
+        this.userCodeError = {
+            code: 400,
+            key: 'userCodeError',
+            message: $message || 'El codigo es incorrecto',
+            $details
+        }
     }
 }
