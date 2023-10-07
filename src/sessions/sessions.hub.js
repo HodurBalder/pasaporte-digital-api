@@ -1,5 +1,5 @@
 const Fields = require('./sessions.fields')
-const Service = require('./sessions.service')
+const Service = require('./sessions.service.mysql')
 
 module.exports = {
     verifySession

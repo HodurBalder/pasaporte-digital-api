@@ -1,5 +1,6 @@
 const Fields = require('./users.fields')
 const Service = require('./users.service')
+const ServiceMySql = require('./users.serviceMySql')
 
 module.exports = {
     loginUser,
@@ -23,7 +24,7 @@ async function loginUser(request, response) {
             password: fields.password.get()
         }
 
-        response.$data(await Service.loginUser(data))
+        response.$data(await ServiceMySql.loginUser(data))
 
     } catch(error) {
         response.$error(error)

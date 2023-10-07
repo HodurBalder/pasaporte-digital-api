@@ -11,7 +11,7 @@ module.exports = new Promise((resolve, reject) => {
             console.info(`[MONGODB] (SUCCESS) ${ Config.mongodb }`.magenta)
 
             const user = await Services.Users.Model.findOne({role: 'admin'})
-
+            console.log('hola')
             if(!user) {
                 await Services.Users.createUser({
                     role: 'admin',

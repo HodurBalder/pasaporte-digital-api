@@ -35,20 +35,5 @@ module.exports = class Fields {
             value: this.props.used,
             required: false
         })
-
-        this.playCount = new Validator({
-            type: 'integer',
-            name: 'veces jugadas',
-            prop: 'playCount',
-            value: this.props.playCount,
-            required: false
-        })
-
-        this.codeId = new Validator({
-            type: 'objectId',
-            name: 'identificador',
-            prop: 'codeId',
-            value: this.props.codeId,
-        })
     }
 }

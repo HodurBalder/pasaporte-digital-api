@@ -1,5 +1,5 @@
 const Fields = require('./games.fields')
-const Service = require('./games.service')
+const Service = require('./games.service.mysql')
 
 module.exports = {
     createGame,

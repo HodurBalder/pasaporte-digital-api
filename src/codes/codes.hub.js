@@ -1,5 +1,5 @@
 const Fields = require('./codes.fields')
-const Service = require('./codes.service')
+const Service = require('./codes.service.mysql')
 
 module.exports = {
     createCode,

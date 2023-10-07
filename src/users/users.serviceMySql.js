@@ -1,7 +1,7 @@
 const Config = require('../config')
-const Model = require('./users.model')
+const Model = require('./users.modelMySql')
 const Messages = require('./users.messages')
-const Services = require('../services')
+const Services = require('../servicesMySql')
 const Methods = require('../methods')
 const Utils = require('../utils')
 
@@ -22,7 +22,10 @@ module.exports = {
 async function loginUser(data) {
     try {
 
-        const user = await Model.findOne({email: data.email}, '+password')
+        const user = await Model.findOne({
+            where: { email: data.email },
+            attributes: ['id', 'password'],
+        });
 
         if(!user)
             throw new Messages(data).userNotFound
@@ -30,7 +33,7 @@ async function loginUser(data) {
         if(!Methods.bcryptCompare(data.password, user.password))
             throw new Messages(data).userPasswordError
 
-        return await Services.Sessions.createSession({userId: user._id})
+        return await Services.Sessions.createSession({userId: user.id})
 
     } catch(error) {
         throw error
@@ -39,20 +42,29 @@ async function loginUser(data) {
 
 async function createUser(data) {
     try {
+       
+        const exists = await Model.findOne({ where: { email: data.email } });
 
-        const exists = await Model.findOne({email: data.email})
+        if (exists) {
+            return exists;
+        }
 
-        if(exists)
-            return exists
+       
+        const user = await Model.create({
+            
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            password: data.password,
+            
+        });
 
-        const user = new Model(data)
+       
+       
 
-        await user.save()
-
-        return await Services.Sessions.createSession({userId: user._id})
-
-    } catch(error) {
-        throw error
+        return user;
+    } catch (error) {
+        throw error;
     }
 }
 

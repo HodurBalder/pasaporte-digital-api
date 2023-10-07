@@ -9,9 +9,12 @@ const FormData = require('express-form-data')
 const Path = require('path')
 
 const Middlewares = require('./src/middlewares')
-const Database = require('./src/database')
+//const Database = require('./src/database')
 const Config = require('./src/config')
 const Router = require('./src/router')
+
+const initializeDatabase = require('./src/db1');
+const sequelize = require('./src/sequelize');
 
 const App = Express()
 
@@ -27,12 +30,33 @@ App.use(Router)
 App.use(Middlewares.serverNotFound)
 App.use(Middlewares.serverError)
 
-Database.then(() => {
-    App.listen(Config.port, () => {
-        console.info(`[HOST] ${ Config.host }`.magenta)
-        console.info(`[PORT] ${ Config.port }`.magenta)
-        console.info(`[TZ] ${ new Date() }`.magenta)
-    })
-}).catch(() => {
-    process.exit(0)
-})
+// Database.then(() => {
+//     App.listen(Config.port, () => {
+//         console.info(`[HOST] ${ Config.host }`.magenta)
+//         console.info(`[PORT] ${ Config.port }`.magenta)
+//         console.info(`[TZ] ${ new Date() }`.magenta)
+//     })
+// }).catch(() => {
+//     process.exit(0)
+// })
+
+initializeDatabase
+  .then(() => {
+    
+    sequelize.sync() 
+      .then(() => {
+        App.listen(Config.port, () => {
+          console.info(`[HOST] ${Config.host}`.magenta);
+          console.info(`[PORT] ${Config.port}`.magenta);
+          console.info(`[TZ] ${new Date()}`.magenta);
+        });
+      })
+      .catch((error) => {
+        console.error('[MySQL] Error al sincronizar tablas:', error);
+        process.exit(1);
+      });
+  })
+  .catch((error) => {
+    console.error('Error al iniciar la aplicación:', error);
+    process.exit(1);
+  });

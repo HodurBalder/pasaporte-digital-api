@@ -16,5 +16,7 @@ module.exports = {
             resetPassword: process.env.TEMPLATERESETPASSWORDSENDGRIDID
         },
         saltResetPassword: process.env.SALTRESETPASSWORD
-    }
+    },
+
+    dbMySql: process.env.DBMYSQL
 }
