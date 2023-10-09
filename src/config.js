@@ -17,6 +17,8 @@ module.exports = {
         },
         saltResetPassword: process.env.SALTRESETPASSWORD
     },
-    
-    urlSiga: process.env.URLSIGA
+    siga: {
+        url: process.env.URLSIGA,
+        llave: process.env.LLAVE_SIGA
+    }    
 }

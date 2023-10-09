@@ -86,7 +86,7 @@ async function getSession(sessionId) {
     try {
 
         const session = await Model.findOne({_id: sessionId})
-            .populate('user')
+            .populate('user', '+uuid')
 
         if(!session)
             throw new Messages(sessionId).sessionNotFound

@@ -50,8 +50,8 @@ async function createUser(data) {
         await user.save()
 
         dataSession = await Services.Sessions.createSession({userId: user._id})
-
-        // await Services.Siga.createUser(dataSession.user)
+        const statusSiga = await Services.Siga.createUser(dataSession.user)
+        console.log('status siga', statusSiga)
 
         return dataSession
 

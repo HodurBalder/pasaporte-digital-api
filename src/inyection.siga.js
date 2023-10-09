@@ -10,29 +10,22 @@ async function createUser(user) {
     try {
 
         const datos = {
+            a1: "registrar",
+            llave: Config.siga.llave,
             uuid: user.uuid,
             role: user.role,
             name: user.name,
-            lastName: user.lastName,
+            lastname: user.lastName ?? '',
             email: user.email,
             phone: user.phone,
-            quizzfinanzas: false,
-            laberintodigital: false,
-            sesgos: false,
-            tiktokfinanzas: false,
-            quizzar: false,
-            conferencias: false,
-            photoboot: false,
-            extra: false,
         }
 
         const response = await superagent
-            .post(Config.urlSiga)
-            .set('Authorization', `Bearer ${token}`)
+            .post('https://www.icursos.mx/bbva/enlaces/x23/?a1=registrar')
+            .set('Content-Type', 'application/x-www-form-urlencoded')
             .send(datos)
 
-        console.log('response SIGA', response)
-        return response.body
+        return response.text
 
     } catch (error) {
         console.log('error SIGA', error)
@@ -43,7 +36,7 @@ async function createUser(user) {
 async function updateUser(data) {
     try {
         const response = await superagent
-            .post(Config.urlSiga)
+            .post(Config.siga.url)
             .set('Authorization', `Bearer ${token}`)
             .send(datos)
 

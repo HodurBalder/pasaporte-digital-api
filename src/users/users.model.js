@@ -21,6 +21,10 @@ const schema = new Schema({
         type: String
     },
 
+    lastName: {
+        type: String
+    },
+
     email: {
         type: String
     },
