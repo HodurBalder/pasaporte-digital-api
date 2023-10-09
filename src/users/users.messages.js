@@ -23,6 +23,13 @@ module.exports = class Messages {
             $details
         }
 
+        this.userExist = {
+            code: 409,
+            key: 'userExist',
+            message: $message || 'El email ya se encuentra registrado. Por favor inicie sesión.',
+            $details
+        }
+
         this.userDeleteError = {
             code: 503,
             key: 'userDeleteError',

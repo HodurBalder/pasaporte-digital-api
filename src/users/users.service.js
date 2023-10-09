@@ -43,7 +43,7 @@ async function createUser(data) {
         const exists = await Model.findOne({email: data.email})
 
         if(exists)
-            return exists
+            throw new Messages(data.email).userExist
 
         const user = new Model(data)
 
