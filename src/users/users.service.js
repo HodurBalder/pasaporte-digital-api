@@ -15,6 +15,7 @@ module.exports = {
     deleteUser,
     resetPasswordRequest,
     resetPassword,
+    checkCode,
     Model,
     Messages
 }
@@ -184,6 +185,27 @@ async function resetPassword(data) {
         await updateUserPassword(user._id, data)
 
         return await Services.Sessions.createSession({userId: user._id})
+
+    } catch(error) {
+        throw error
+    }
+}
+
+async function checkCode(data) {
+    try {
+
+        const user = await Model.findOne({email: data.email}, '+codeResetPassword')
+        
+        if(!user)
+            throw new Messages(data.email).userNotFound
+
+        if(user.codeResetPassword !== data.code)
+            throw new Messages(data.code).userCodeError
+
+        return {
+            message: "El código es válido, puede continuar.",
+            code: data.code
+        }
 
     } catch(error) {
         throw error
