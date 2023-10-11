@@ -29,12 +29,11 @@ module.exports = class Fields {
             type: 'string',
             name: 'nombre del juego',
             prop: 'gameName',
-            enum: ['tiktok', 'sesgosCognitivos', 'quizzFinanciero', 'quizzFinal', 'laberintoWeb', 'laberintoVR'],
+            enum: ['quizzfinanzas','laberintodigital','sesgos','tiktokfinanzas','quizzar','conferencias','photoboot','extra'],
             value: this.props.gameName,
             required: true
         })
         
-
         this.playCount = new Validator({
             type: 'integer',
             name: 'veces jugadas',
