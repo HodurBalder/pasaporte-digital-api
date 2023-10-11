@@ -60,6 +60,13 @@ module.exports = class Fields {
             value: this.props.password,
         })
 
+        this.code = new Validator({
+            type: 'string',
+            name: 'codigo',
+            prop: 'code',
+            value: this.props.code,
+        })
+
         this.token = new Validator({
             type: 'string',
             name: 'token',

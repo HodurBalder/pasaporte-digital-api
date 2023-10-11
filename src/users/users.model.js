@@ -38,6 +38,11 @@ const schema = new Schema({
         select: false
     },
 
+    codeResetPassword: {
+        type: String,
+        select: false
+    },
+
     updated: {
         type: Date
     },

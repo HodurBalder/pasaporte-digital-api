@@ -23,7 +23,7 @@ async function createGame(data) {
             return exists
 
         const game = new Model(data)
-        console.log(game)
+
         return await game.save()
 
     } catch(error) {
@@ -112,7 +112,6 @@ async function getGamesByUser(userId) {
 
         const games = await Model.find({userId: userId})
 
-        console.log(games)
         if(!games)
             throw new Messages(gameId).gameNotFound
 

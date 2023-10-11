@@ -15,6 +15,7 @@ module.exports = {
     deleteUser,
     resetPasswordRequest,
     resetPassword,
+    checkCode,
     Model,
     Messages
 }
@@ -131,6 +132,7 @@ async function updateUserPassword(userId, data) {
         const user = await Model.findOne({_id: userId}, '+password')
         
         user.password = data.password
+        user.codeResetPassword = generateCode()
 
         return await user.save()
 
@@ -154,13 +156,15 @@ async function deleteUser(userId) {
 
 async function resetPasswordRequest(email) {
     try {
-
         const user = await Model.findOne({email: email})
 
         if(!user)
             throw new Messages(user).userNotFound
 
-            return await Services.SendGrid.sendEmailResetPassword(user)
+        user.codeResetPassword = generateCode() 
+        await user.save()
+
+        return await Services.SendGrid.sendEmailResetPassword(user)
 
     } catch(error) {
         throw error
@@ -170,13 +174,52 @@ async function resetPasswordRequest(email) {
 async function resetPassword(data) {
     try {
 
-        const userId = Methods.stringDecrypt(data.token, Config.saltDecryptToken)
+        const user = await Model.findOne({email: data.email}, '+codeResetPassword')
+        
+        if(!user)
+            throw new Messages(data.email).userNotFound
+        
+        if(user.codeResetPassword !== data.code)
+            throw new Messages(data.code).userCodeError
 
-        await updateUserPassword(userId, data)
+        await updateUserPassword(user._id, data)
 
-        return await Services.Sessions.createSession({userId: userId})
+        return await Services.Sessions.createSession({userId: user._id})
 
     } catch(error) {
         throw error
     }
+}
+
+async function checkCode(data) {
+    try {
+
+        const user = await Model.findOne({email: data.email}, '+codeResetPassword')
+        
+        if(!user)
+            throw new Messages(data.email).userNotFound
+
+        if(user.codeResetPassword !== data.code)
+            throw new Messages(data.code).userCodeError
+
+        return {
+            message: "El código es válido, puede continuar.",
+            code: data.code
+        }
+
+    } catch(error) {
+        throw error
+    }
+}
+
+function generateCode(){
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    let code = ''
+
+    for (let i = 0; i < 4; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length)
+        code += characters[randomIndex]
+    }
+
+    return code
 }
