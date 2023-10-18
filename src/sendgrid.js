@@ -21,7 +21,7 @@ async function sendEmailResetPassword(user) {
 
     const msg = {
         to: user.email,
-        from: 'hodurbalder@gmail.com',
+        from: 'eventos@grupoamasb.mx',
         templateId: Config.sendgrid.templates.resetPassword,
         dynamic_template_data: {
             name: user.name,
@@ -29,7 +29,7 @@ async function sendEmailResetPassword(user) {
         }
     }
 
-    await sendEmail(msg)
-    console.log(msg)
+    const data = await sendEmail(msg)
+    console.log(msg, data)
     return `email send to: ${user.email}`
 }

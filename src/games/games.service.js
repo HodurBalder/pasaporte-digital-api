@@ -23,6 +23,9 @@ async function createGame(data) {
             return exists
 
         const game = new Model(data)
+        const user = await Services.Users.getUser(data.userId)
+        const statusSiga = await Services.Siga.updateGame(user.uuid, game)
+        console.log('status siga', statusSiga)
 
         return await game.save()
 
@@ -86,6 +89,10 @@ async function updateGame(gameId, data) {
         keys.forEach(key => {
             game[key] = data[key]
         })
+
+        const user = await Services.Users.getUser(data.userId)
+        const statusSiga = await Services.Siga.updateGame(user.uuid, game)
+        console.log('status siga', statusSiga)
 
         return await game.save()
 

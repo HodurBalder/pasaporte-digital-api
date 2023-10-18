@@ -19,6 +19,11 @@ module.exports = {
     },
     siga: {
         url: process.env.URLSIGA,
-        llave: process.env.LLAVE_SIGA
+        llaveCreate: process.env.LLAVE_SIGA,
+        llaveUpdate: process.env.LLAVE_SIGA_UPDATE
+    },
+    google: {
+        clientId: process.env.CLIENT_ID_GOOGLE
     }    
+
 }

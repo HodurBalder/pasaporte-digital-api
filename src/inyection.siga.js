@@ -3,7 +3,7 @@ const Config = require('./config')
 
 module.exports = {
     createUser,
-    updateUser,
+    updateGame,
 }
 
 async function createUser(user) {
@@ -11,7 +11,7 @@ async function createUser(user) {
 
         const datos = {
             a1: "registrar",
-            llave: Config.siga.llave,
+            llave: Config.siga.llaveCreate,
             uuid: user.uuid,
             role: user.role,
             name: user.name,
@@ -21,7 +21,7 @@ async function createUser(user) {
         }
 
         const response = await superagent
-            .post('https://www.icursos.mx/bbva/enlaces/x23/?a1=registrar')
+            .post(`${Config.siga.url}/?a1=registrar`)
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .send(datos)
 
@@ -33,15 +33,29 @@ async function createUser(user) {
     }
 }
 
-async function updateUser(data) {
+async function updateGame(userUuid, game) {
     try {
+
+        const datos = {
+            a1: "avances",
+            llave: Config.siga.llaveUpdate,
+            uuid: userUuid,
+            quizzfinanzas: (game.gameName === 'quizzfinanzas' && game.completed === true) ? 1 : '',
+            laberintodigital: (game.gameName === 'laberintodigital' && game.completed === true) ? 1 : '',
+            sesgos: (game.gameName === 'sesgos' && game.completed === true) ? 1 : '',
+            tiktokfinanzas: (game.gameName === 'tiktokfinanzas' && game.completed === true) ? 1 : '',
+            quizzar: (game.gameName === 'quizzar' && game.completed === true) ? 1 : '',
+            conferencias: (game.gameName === 'conferencias' && game.completed === true) ? 1 : '',
+            photoboot: (game.gameName === 'photoboot' && game.completed === true) ? 1 : '',
+            extra: (game.gameName === 'extra' && game.completed === true) ? 1 : '',
+        }
+
         const response = await superagent
-            .post(Config.siga.url)
-            .set('Authorization', `Bearer ${token}`)
+            .post(`${Config.siga.url}/?a1=avances`)
+            .set('Content-Type', 'application/x-www-form-urlencoded')
             .send(datos)
 
-        console.log('response SIGA', response)
-        return response.body
+        return response.text
 
     } catch (error) {
         console.log('error SIGA', error)

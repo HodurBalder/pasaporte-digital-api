@@ -73,5 +73,12 @@ module.exports = class Fields {
             prop: 'token',
             value: this.props.token,
         })
+
+        this.jwt = new Validator({
+            type: 'string',
+            name: 'jwt',
+            prop: 'jwt',
+            value: this.props.jwt,
+        })
     }
 }

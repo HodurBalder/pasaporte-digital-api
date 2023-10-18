@@ -22,4 +22,6 @@ Router.put('/users/resetPasswordRequest/:email', Hub.resetPassword)
 
 Router.post('/users/checkCode/:email', Hub.checkCode)
 
+Router.post('/users/loginGoogle/', Hub.loginGoogle)
+
 module.exports = Router

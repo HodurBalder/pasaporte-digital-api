@@ -68,6 +68,7 @@ async function updateGame(request, response) {
         const fields = new Fields(request)
 
         let data = {
+            userId: request.userId,
             gameId: fields.gameId.get()
         }
 

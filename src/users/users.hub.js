@@ -11,7 +11,8 @@ module.exports = {
     deleteUser,
     resetPasswordRequest,
     resetPassword,
-    checkCode
+    checkCode,
+    loginGoogle,
 }
 
 async function loginUser(request, response) {
@@ -183,6 +184,18 @@ async function checkCode(request, response) {
         }
 
         response.$data(await Service.checkCode(data))
+
+    } catch(error) {
+        response.$error(error)
+    }
+}
+
+async function loginGoogle(request, response) {
+    try {
+
+        const fields = new Fields(request)
+
+        response.$data(await Service.loginGoogle(fields.jwt.get()))
 
     } catch(error) {
         response.$error(error)

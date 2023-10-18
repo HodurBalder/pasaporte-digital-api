@@ -16,6 +16,7 @@ module.exports = {
     resetPasswordRequest,
     resetPassword,
     checkCode,
+    loginGoogle,
     Model,
     Messages
 }
@@ -210,6 +211,13 @@ async function checkCode(data) {
     } catch(error) {
         throw error
     }
+}
+
+async function loginGoogle(jwt){
+    const dataGoogle = await Services.oauthGoogle.getDecodedOAuthJwtGoogle(jwt)
+    console.log('dataGoogle', dataGoogle)
+
+    return dataGoogle
 }
 
 function generateCode(){
