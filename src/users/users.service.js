@@ -98,7 +98,7 @@ async function getUsers(query) {
 async function getUser(userId) {
     try {
 
-        const user = await Model.findOne({_id: userId})
+        const user = await Model.findOne({_id: userId}, '+uuid')
 
         if(!user)
             throw new Messages(userId).userNotFound
